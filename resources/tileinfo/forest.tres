@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TilemapTileInfo" load_steps=2 format=3 uid="uid://qlbiiwgxbmjh"]
+
+[ext_resource type="Script" path="res://addons/gaea/tile_info/tilemap_tile_info.gd" id="1_610fe"]
+
+[resource]
+resource_name = "Forest"
+script = ExtResource("1_610fe")
+type = 0
+tilemap_layer = 0
+source_id = 0
+atlas_coord = Vector2i(0, 0)
+alternative_tile = 2
+id = "forest"
+layer = 0
+metadata/_custom_type_script = ExtResource("1_610fe")
