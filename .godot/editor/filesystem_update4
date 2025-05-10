@@ -1,0 +1,9 @@
+res://main_menu.tscn
+res://tileset/fantasyset.tres
+res://tileset/sceneset.tres
+res://main_menu.gd
+res://tilescenes/desert_tile.tscn
+res://tilescenes/forest_tile.tscn
+res://tilescenes/plains_tile.tscn
+res://tilescenes/water_tile.tscn
+res://tilescenes/tile.tscn

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://uad3ndu6cba1"]
 
-[ext_resource type="Script" path="res://tilescenes/tile.gd" id="1_v1vbt"]
+[ext_resource type="Script" uid="uid://gek2y6pke6y4" path="res://tilescenes/tile.gd" id="1_v1vbt"]
 [ext_resource type="TileSet" uid="uid://bjdno3p1j1sra" path="res://tileset/fantasyset.tres" id="1_vnglr"]
 
 [node name="Tile" type="Node2D"]

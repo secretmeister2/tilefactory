@@ -16,10 +16,6 @@ run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/gaea/plugin.cfg")
-
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
