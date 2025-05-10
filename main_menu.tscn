@@ -3,13 +3,7 @@
 [ext_resource type="Script" uid="uid://dj3j045obrmx2" path="res://main_menu.gd" id="1_g8g3n"]
 [ext_resource type="TileSet" uid="uid://40h37kqofme4" path="res://tileset/sceneset.tres" id="2_8u0te"]
 
-[node name="MainMenu" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MainMenu" type="Node2D"]
 script = ExtResource("1_g8g3n")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -17,5 +11,4 @@ tile_map_data = PackedByteArray("AAD9////AAAAAAAAAwD+/wAAAAAAAAAAAAD/////AAAAAAA
 tile_set = ExtResource("2_8u0te")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-9, 12)
 zoom = Vector2(0.75, 0.75)
