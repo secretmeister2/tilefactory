@@ -19,3 +19,12 @@ tile_set = ExtResource("2_8u0te")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-9, 12)
 zoom = Vector2(0.75, 0.75)
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -515.0
+offset_right = 971.0
+offset_bottom = 1028.0
+
+[connection signal="gui_input" from="Panel" to="." method="panelclick"]
