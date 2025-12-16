@@ -1,15 +1,9 @@
-[gd_resource type="Resource" script_class="TilemapTileInfo" load_steps=2 format=3 uid="uid://bkuerc6syfyin"]
+[gd_resource type="Resource" script_class="TilemapTileInfo" format=3 uid="uid://bkuerc6syfyin"]
 
-[ext_resource type="Script" path="res://addons/gaea/tile_info/tilemap_tile_info.gd" id="1_rb4nd"]
+[ext_resource type="Script" uid="uid://bu74n2dw7qqje" path="res://addons/gaea/tile_info/tilemap_tile_info.gd" id="1_rb4nd"]
 
 [resource]
 resource_name = "Water"
 script = ExtResource("1_rb4nd")
-type = 0
-tilemap_layer = 0
-source_id = 0
-atlas_coord = Vector2i(0, 0)
-alternative_tile = 5
 id = "water"
-layer = 0
 metadata/_custom_type_script = ExtResource("1_rb4nd")

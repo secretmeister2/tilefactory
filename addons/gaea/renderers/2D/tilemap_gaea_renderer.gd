@@ -29,6 +29,7 @@ enum NodeType {
 ## Set this to [code]true[/code] if you have gaps between your terrains. Can cause problems.
 @export var terrain_gap_fix: bool = false
 
+@export var offset : Vector2
 
 func _ready() -> void:
 	super()

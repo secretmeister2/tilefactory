@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bjdno3p1j1sra"]
+[gd_resource type="TileSet" format=3 uid="uid://bjdno3p1j1sra"]
 
 [ext_resource type="Texture2D" uid="uid://sskty3eg0rm7" path="res://tileset/fantasyhextiles_v3.png" id="1_owsy7"]
 
