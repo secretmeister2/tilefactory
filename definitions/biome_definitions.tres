@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BiomeDefs" format=3 uid="uid://cqkrcx6rd1oaf"]
+
+[ext_resource type="Script" uid="uid://ds1ggwetnnww3" path="res://biome_def.gd" id="1_djr76"]
+[ext_resource type="Script" uid="uid://m7tgy2by0oxw" path="res://biomedefinitions.gd" id="1_m5tjm"]
+
+[sub_resource type="Resource" id="Resource_djr76"]
+script = ExtResource("1_djr76")
+tiletype = 1
+rarity = 1.0
+metadata/_custom_type_script = "uid://ds1ggwetnnww3"
+
+[resource]
+script = ExtResource("1_m5tjm")
+defs = Array[ExtResource("1_djr76")]([SubResource("Resource_djr76")])
+metadata/_custom_type_script = "uid://m7tgy2by0oxw"

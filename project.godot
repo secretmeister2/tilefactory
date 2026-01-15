@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 
 Global="*res://global.gd"
 Utility="*uid://btdorkgwo0m7c"
+Definitions="*uid://bhbthlqmg04x1"
 
 [editor_plugins]
 

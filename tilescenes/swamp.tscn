@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://8w0mqwb1vhyg"]
+
+[ext_resource type="PackedScene" uid="uid://uad3ndu6cba1" path="res://tilescenes/tile.tscn" id="1_jrwdv"]
+
+[node name="ForestTile" unique_id=174417574 instance=ExtResource("1_jrwdv")]
+
+[node name="TileMapLayer" parent="." index="0"]
+tile_map_data = PackedByteArray(0, 0, 255, 255, 0, 0, 1, 0, 6, 0, 1, 0, 0, 0)

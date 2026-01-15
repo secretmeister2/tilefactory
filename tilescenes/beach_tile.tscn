@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwv4kbiis87dl"]
+[gd_scene format=3 uid="uid://bwv4kbiis87dl"]
 
 [ext_resource type="PackedScene" uid="uid://uad3ndu6cba1" path="res://tilescenes/tile.tscn" id="1_mvq5o"]
 
-[node name="DesertTile" instance=ExtResource("1_mvq5o")]
+[node name="DesertTile" unique_id=910017122 instance=ExtResource("1_mvq5o")]
 
 [node name="TileMapLayer" parent="." index="0"]
 tile_map_data = PackedByteArray(0, 0, 255, 255, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0)

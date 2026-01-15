@@ -3,17 +3,55 @@
 [ext_resource type="PackedScene" uid="uid://qj8fwkuxoiqc" path="res://tilescenes/desert_tile.tscn" id="1_5wu42"]
 [ext_resource type="PackedScene" uid="uid://cxuhtr02xstmj" path="res://tilescenes/forest_tile.tscn" id="2_j831f"]
 [ext_resource type="PackedScene" uid="uid://bwv4kbiis87dl" path="res://tilescenes/beach_tile.tscn" id="2_odm0x"]
+[ext_resource type="PackedScene" uid="uid://byjtio71dj6vk" path="res://tilescenes/snow_tile.tscn" id="3_mctpq"]
 [ext_resource type="PackedScene" uid="uid://kfadk012bhrc" path="res://tilescenes/plains_tile.tscn" id="3_odm0x"]
 [ext_resource type="PackedScene" uid="uid://uad3ndu6cba1" path="res://tilescenes/tile.tscn" id="4_4ifb4"]
+[ext_resource type="PackedScene" uid="uid://d1je5oncva0gf" path="res://tilescenes/ice_tile.tscn" id="4_7f2j4"]
+[ext_resource type="PackedScene" uid="uid://cj8leuymmo3eg" path="res://tilescenes/snowhill_tile.tscn" id="4_mwofq"]
+[ext_resource type="PackedScene" uid="uid://bbd1coprmckd" path="res://tilescenes/snowforest_tile.tscn" id="5_7f2j4"]
 [ext_resource type="PackedScene" uid="uid://cng1srf8lhro5" path="res://tilescenes/water_tile.tscn" id="5_id3ju"]
+[ext_resource type="PackedScene" uid="uid://dftrjla5wmpw2" path="res://tilescenes/coldwater_tile.tscn" id="5_odm0x"]
+[ext_resource type="PackedScene" uid="uid://cj2px6uwref5p" path="res://tilescenes/snowforesthill_tile.tscn" id="6_yxe8g"]
+[ext_resource type="PackedScene" uid="uid://dj6bq3o0e3uta" path="res://tilescenes/snowdenseforest_tile.tscn" id="7_upq8d"]
+[ext_resource type="PackedScene" uid="uid://cujupcc8ykrwi" path="res://tilescenes/mountain.tscn" id="8_ek78c"]
+[ext_resource type="PackedScene" uid="uid://ck2tug6hm53bv" path="res://tilescenes/hill.tscn" id="9_8jlqk"]
+[ext_resource type="PackedScene" uid="uid://672lba7gh134" path="res://tilescenes/foresthill.tscn" id="10_80xeh"]
+[ext_resource type="PackedScene" uid="uid://jkp5cl0luhsr" path="res://tilescenes/forestdense_tile.tscn" id="11_5tg88"]
+[ext_resource type="PackedScene" uid="uid://beod3yp6n1u3o" path="res://tilescenes/desertoasis_tile.tscn" id="13_l55qr"]
+[ext_resource type="PackedScene" uid="uid://bhy06vbnbacwt" path="res://tilescenes/deserthill_tile.tscn" id="14_fj257"]
+[ext_resource type="PackedScene" uid="uid://bx1lc4ijtc1cm" path="res://tilescenes/desertdune_tile.tscn" id="15_t1o5x"]
+[ext_resource type="PackedScene" uid="uid://dvhxhwqxr2fuv" path="res://tilescenes/desertcliff_tile.tscn" id="16_4ffuy"]
+[ext_resource type="PackedScene" uid="uid://cqcgsenya80mk" path="res://tilescenes/swampwater.tscn" id="20_0nbvi"]
+[ext_resource type="PackedScene" uid="uid://d17t72atu7a06" path="res://tilescenes/swamptrees.tscn" id="21_qkbft"]
+[ext_resource type="PackedScene" uid="uid://bt3qv4bk1hkxq" path="res://tilescenes/swamppools.tscn" id="22_46wl7"]
+[ext_resource type="PackedScene" uid="uid://8w0mqwb1vhyg" path="res://tilescenes/swamp.tscn" id="23_ol7xg"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_wwd4f"]
 resource_name = "tilescenes"
 scenes/0/scene = ExtResource("5_id3ju")
-scenes/1/scene = ExtResource("2_odm0x")
-scenes/2/scene = ExtResource("2_j831f")
-scenes/3/scene = ExtResource("1_5wu42")
-scenes/5/scene = ExtResource("3_odm0x")
+scenes/1/scene = ExtResource("5_odm0x")
+scenes/2/scene = ExtResource("4_7f2j4")
+scenes/10/scene = ExtResource("2_odm0x")
+scenes/20/scene = ExtResource("1_5wu42")
+scenes/21/scene = ExtResource("14_fj257")
+scenes/22/scene = ExtResource("15_t1o5x")
+scenes/23/scene = ExtResource("16_4ffuy")
+scenes/24/scene = ExtResource("13_l55qr")
+scenes/30/scene = ExtResource("3_odm0x")
+scenes/31/scene = ExtResource("2_j831f")
+scenes/32/scene = ExtResource("11_5tg88")
+scenes/33/scene = ExtResource("9_8jlqk")
+scenes/34/scene = ExtResource("10_80xeh")
+scenes/40/scene = ExtResource("8_ek78c")
+scenes/50/scene = ExtResource("23_ol7xg")
+scenes/51/scene = ExtResource("21_qkbft")
+scenes/52/scene = ExtResource("22_46wl7")
+scenes/53/scene = ExtResource("20_0nbvi")
+scenes/60/scene = ExtResource("3_mctpq")
+scenes/61/scene = ExtResource("5_7f2j4")
+scenes/62/scene = ExtResource("7_upq8d")
+scenes/63/scene = ExtResource("4_mwofq")
+scenes/64/scene = ExtResource("6_yxe8g")
 scenes/999/scene = ExtResource("4_4ifb4")
 
 [resource]
@@ -21,4 +59,4 @@ tile_shape = 3
 tile_layout = 5
 tile_offset_axis = 1
 tile_size = Vector2i(32, 28)
-sources/0 = SubResource("TileSetScenesCollectionSource_wwd4f")
+sources/1 = SubResource("TileSetScenesCollectionSource_wwd4f")

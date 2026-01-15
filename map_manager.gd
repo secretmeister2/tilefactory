@@ -1,34 +1,34 @@
 extends Node2D
 var target_pos
 
+
 @onready var map_layer:TileMapLayer = $TileMapLayer
 
-var cores:Array[Vector2i]
+var islands:Dictionary[Vector2i,IslandInfo]
 
 func _ready():
 	map_layer.connect("tile_clicked", tile_clicked)
+	map_layer.clear()
 	#Choose number of islands to attempt
 	var num = (randi() % 6) + 3
-	#Create array to keep track of island centers
 	while num>0:
 		#For each island, choose random coords and then attempt to make an island there
 		var x = randi() % 13
 		var y = randi() % 13
-		seedisl(Vector2i(x,y),10*randf())
-			#If island successful, add to list of islands
+		seedisl(Vector2i(x,y),7*randf())
 		num-=1
 
 func update_water():
 	#Add water arround all land
-	var land = map_layer.get_used_cells_by_id(-1,Vector2i(-1,-1),1)
-	var forest=map_layer.get_used_cells_by_id(-1,Vector2i(-1,-1),2)
+	var land = map_layer.get_used_cells_by_id(-1,Vector2i(-1,-1),Global.TILES.BEACH)
+	var forest=map_layer.get_used_cells_by_id(-1,Vector2i(-1,-1),Global.TILES.PLAIN)
 	for cell in land+forest:
 		for neighbour in map_layer.get_surrounding_cells(cell):
 			if map_layer.get_cell_alternative_tile(neighbour)==-1:
 				for neighbour2 in map_layer.get_surrounding_cells(neighbour):
 					if map_layer.get_cell_alternative_tile(neighbour2)==-1:
-						set_cell(neighbour2,0)
-				set_cell(neighbour,0)
+						set_cell(neighbour2,Global.TILES.WATER)
+				set_cell(neighbour,Global.TILES.WATER)
 
 func _process(_delta)->void:
 	if not target_pos: target_pos=$Camera2D.position
@@ -36,101 +36,137 @@ func _process(_delta)->void:
 	target_pos -= 3*thing
 	$Camera2D.position+=0.05 * (target_pos- $Camera2D.position)
 
+func gen_island_properties(neighbours:Array,size:float,island:IslandInfo) -> void:
+	island.size=size
+	if neighbours.is_empty():
+		var tempnum = randf()
+		var erodenum = randf()
+		island.temperature=-4*tempnum*tempnum+4*tempnum
+		island.erosion_level=-4*erodenum*erodenum+4*erodenum
+	else:
+		var totalerode:float=0.0
+		var totaltemp:float=0.0
+		for neighbour in neighbours:
+			totalerode+=neighbour.erosion_level
+			totaltemp+=neighbour.temperature
+		totalerode /= neighbours.size()
+		totaltemp /= neighbours.size()
+		totalerode += 0.5*(randf()-0.5)
+		totaltemp += 0.5*(randf()-0.5)
+		island.temperature=clamp(totaltemp,0,1)
+		island.erosion_level=clamp(totalerode,0,1)
+	print("Temp: "+str(island.temperature))
+	print("Erosion: "+str(island.erosion_level))
+
 func seedisl(pos:Vector2i, size:float):
 	#If too close, cancel
-	if findnearest(pos,[1]) < 5:
+	if findnearest(pos,[Global.TILES.BEACH]) < 5:
 		return false
 	#Set the center
-	set_cell(pos,1)
+	var island = IslandInfo.new()
+	island.size=size
+	set_cell(pos,Global.TILES.BEACH)
+	var nearest:Array
+	#Array of nearest few islands
+	var checking: = islands.duplicate().keys()
+	checking.sort_custom(func compare(value1,value2): if value1.distance_squared_to(pos)>value2.distance_squared_to(pos): return true else: return false )
+	for i in range(3):
+		if not checking.is_empty(): nearest.append(checking.pop_back())
+	var nearestisls=nearest.map(func isl(isl):return islands[isl])
+	gen_island_properties(nearestisls,size,island)
+	var water
+	match island.temperature:
+		var x when -1.0<x && x<0.1: water = Global.TILES.ICE
+		var x when 0.1<x&&x<0.3: water = Global.TILES.COLD_WATER
+		_: water = Global.TILES.WATER
+	var base_tile
+	#Island created -> forms temperature and erosion based on neighbours -> 
+	#creates base island with base tiles -> erodes -> 
+	#chooses biomes -> creates biomes 
 	var tiles=1
 	#Based on size, try and add new tiles
 	while tiles < (randf()+0.3)*9*size:
-		if simulate(pos): tiles+=1
+		if simulate(pos,island.erosion_level): tiles+=1
 		elif randf()<0.1: tiles+=1
 	for land in findconnected(pos):
 		for neighbour in map_layer.get_surrounding_cells(land):
 			if map_layer.get_cell_alternative_tile(neighbour)<1:
-				if randf() < 0.7: set_cell(neighbour,1)
+				if randf() < (0.7+0.1*island.erosion_level): set_cell(neighbour,Global.TILES.BEACH)
 		#Try and smooth out island where each empty or water tile near land has a 70% chance of being turned to land
-	var nearest:Array[Vector2i]
-	#Array of nearest few islands
-	while nearest.size()< min(3,cores.size()):
-		var distance=100
-		var closest:Vector2i
-		var checking: Array[Vector2i] = cores.duplicate()
-		for near in nearest: checking.erase(near)
-		for core in checking:
-			if Utility.hex_distance(core,pos) < distance:
-				distance = Utility.hex_distance(core,pos)
-				closest=core
-		nearest.append(closest)
-	cores.append(pos)
+	islands[pos]=island
+	
 	#Add seaways between new and nearests
 	for core in nearest:
 		add_seaway(core,pos)
 	update_water()
 	smooth_water()
-	erode(pos)
-	add_plains(pos)
+	
+	erode(pos,island.erosion_level)
+	
+	island.tiles=findconnected(pos).size()
+	if 3*randf()<size:
+		add_plains(pos,size)
 	return true
 
-func add_plains(pos:Vector2i):
-	var interior = findconnected(pos,[1]).filter(func interior(value): return not map_layer.get_surrounding_cells(value).any(func iswater(subvalue): return map_layer.get_cell_alternative_tile(subvalue) not in [1,2]))
+func add_plains(pos:Vector2i,size:float):
+	var interior = findconnected(pos,[Global.TILES.BEACH]).filter(func interior(value): return not map_layer.get_surrounding_cells(value).any(func iswater(subvalue): return map_layer.get_cell_alternative_tile(subvalue) not in [1,2]))
 	if interior and interior.size()>randf()*5: 
 		var plained = interior.pick_random()
-		set_cell(plained,5)
+		set_cell(plained,Global.TILES.PLAIN)
 		var plains=1
-		while plains < randf()*30:
-			if simulate(plained,1): plains+=1
-			elif randf()<0.05: plains+=1
+		var numplains=randi()%roundi(2*size)+4
+		while plains < numplains:
+			if simulate(plained,0,Global.TILES.BEACH): plains+=1
+			elif randf()<0.1: plains+=1
 
-func erode(pos:Vector2i):
+func erode(pos:Vector2i,erosion:float):
 	var coast = []
-	for cell in findconnected(pos,[1]):
+	for cell in findconnected(pos,[Global.TILES.BEACH]):
 		for n in map_layer.get_surrounding_cells(cell):
 			if map_layer.get_cell_alternative_tile(n) == 0:
 				coast.append(cell)
 				break
 	var i = 0
-	if coast.size()<6: return
-	while randf()>0.3+i:
+	if coast.size()<10: return
+	var erosionevents = erosion*(5+5*randf())
+	while i<erosionevents:
 		var chosen = coast.pick_random()
 		if randf()<0.6:
-			set_cell(chosen,0)
-		elif randf()<0.2:
+			set_cell(chosen,Global.TILES.WATER)
+		elif randf()<0.3:
 			var otherchoice=coast.pick_random()
 			var line = Utility.get_line_points(chosen,otherchoice)
 			for cell in line:
-				set_cell(cell,0)
+				set_cell(cell,Global.TILES.WATER)
 			if randf()<0.5:
 				var surrland = map_layer.get_surrounding_cells(chosen).filter(func(test):return map_layer.get_cell_alternative_tile(test)==1)
-				if surrland: set_cell(surrland.pick_random(),0)
+				if surrland: set_cell(surrland.pick_random(),Global.TILES.WATER)
 			else:
 				var surrland = map_layer.get_surrounding_cells(otherchoice).filter(func(test):return map_layer.get_cell_alternative_tile(test)==1)
-				if surrland: set_cell(surrland.pick_random(),0)
-		i+=0.07
+				if surrland: set_cell(surrland.pick_random(),Global.TILES.WATER)
+		i+=1
 
 func set_cell(pos:Vector2i,type:int):
-	map_layer.set_cell(pos,0,Vector2i.ZERO,type)
+	map_layer.set_cell(pos,1,Vector2i.ZERO,type)
 
 func add_seaway(from:Vector2i,to:Vector2i):
 	for cell in Utility.get_line_points(from,to):
 		if map_layer.get_cell_alternative_tile(cell) in [-1,0]:
-			set_cell(cell,1)
+			set_cell(cell,Global.TILES.BEACH)
 			update_water()
-			set_cell(cell,0)
+			set_cell(cell,Global.TILES.WATER)
 
 func smooth_water():
 	var cont=true
 	while cont:
 		cont=false
-		for sea in map_layer.get_used_cells_by_id(-1,Vector2i(-1,-1),0):
+		for sea in map_layer.get_used_cells_by_id(-1,Vector2i(-1,-1),Global.TILES.WATER):
 			for neighbour in map_layer.get_surrounding_cells(sea).filter(func(test): return map_layer.get_cell_alternative_tile(test)==-1):
 				if map_layer.get_surrounding_cells(neighbour).filter(func(test): return map_layer.get_cell_alternative_tile(test)==0).size()>=4:
-					set_cell(neighbour,0)
+					set_cell(neighbour,Global.TILES.WATER)
 					cont=true
 
-func simulate(pos:Vector2i,placedin:int=-1):
+func simulate(pos:Vector2i,erosion:float,placedin:int=-1):
 	#Find all tiles on island
 	var connected=findconnected(pos)
 	var type = map_layer.get_cell_alternative_tile(pos)
@@ -154,7 +190,7 @@ func simulate(pos:Vector2i,placedin:int=-1):
 	#Get a factor based on distance to other land so that islands dont merge
 	var distancefactor = 0 if distance<4.76 else ((3.7*distance-17.6)/(3.2*distance-9))
 	#Random chance to add a new tile next to it based on distance and number of surrounding cells
-	if randf()<0.3*distancefactor*(1.015**surrounded):
+	if randf()<0.3*distancefactor*((1.05-0.01*erosion)**surrounded):
 		set_cell(valid.pick_random(),type)
 		return true
 	return false
