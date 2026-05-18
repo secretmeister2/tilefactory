@@ -76,8 +76,8 @@ func seedisl(pos:Vector2i, size:float):
 	gen_island_properties(nearestisls,size,island)
 	var water
 	match island.temperature:
-		var x when -1.0<x && x<0.1: water = Global.TILES.ICE
-		var x when 0.1<x&&x<0.3: water = Global.TILES.COLD_WATER
+		var x when 0.0< x && x <0.1: water = Global.TILES.ICE
+		var x when 0.1< x && x <0.3: water = Global.TILES.COLD_WATER
 		_: water = Global.TILES.WATER
 	var base_tile
 	#Island created -> forms temperature and erosion based on neighbours -> 
